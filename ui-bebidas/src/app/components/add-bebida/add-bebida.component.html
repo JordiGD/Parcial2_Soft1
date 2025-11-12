@@ -1,0 +1,58 @@
+<div class="form-container">
+  <h2>Agregar Nueva Bebida</h2>
+  
+  <div *ngIf="success" class="success-message">
+    ¡Bebida agregada exitosamente!
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+  
+  <form (ngSubmit)="onSubmit()" #bebidaForm="ngForm">
+    <div class="form-group">
+      <label for="name">Nombre:</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name"
+        [(ngModel)]="bebida.name" 
+        required
+        data-testid="input-name"
+      >
+    </div>
+    
+    <div class="form-group">
+      <label for="size">Tamaño:</label>
+      <select 
+        id="size" 
+        name="size"
+        [(ngModel)]="bebida.size" 
+        required
+        data-testid="select-size"
+      >
+        <option value="small">Pequeño</option>
+        <option value="medium">Mediano</option>
+        <option value="large">Grande</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="price">Precio:</label>
+      <input 
+        type="number" 
+        id="price" 
+        name="price"
+        [(ngModel)]="bebida.price" 
+        step="0.01"
+        min="0.01"
+        required
+        data-testid="input-price"
+      >
+    </div>
+    
+    <button type="submit" [disabled]="!bebidaForm.form.valid" data-testid="btn-submit">
+      Agregar Bebida
+    </button>
+  </form>
+</div>

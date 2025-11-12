@@ -1,0 +1,10 @@
+﻿target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.git
+.gitignore
+README.md
+Dockerfile*
+docker-compose*
+*.md

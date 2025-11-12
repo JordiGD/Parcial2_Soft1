@@ -1,0 +1,21 @@
+<div class="app-container">
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="coffee-icon">☕</span>
+      <h1>Virtual Coffee</h1>
+      <span class="subtitle">Gestión de Bebidas</span>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/menu" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon">📋</span> Menú
+      </a>
+      <a routerLink="/add" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon">➕</span> Agregar Bebida
+      </a>
+    </div>
+  </nav>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,13 @@
+﻿node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.git
+.gitignore
+README.md
+Dockerfile*
+docker-compose*
+*.md
+dist/
+.angular/
+coverage/

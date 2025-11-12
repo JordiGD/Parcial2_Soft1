@@ -1,0 +1,229 @@
+services:
+  postgres-bebidas:
+    image: postgres:15-alpine
+    container_name: postgres-bebidas
+    environment:
+      POSTGRES_DB: virtualcoffee_bebidas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_bebidas_data:/var/lib/postgresql/data
+      - ./database/init-bebidas.sql:/docker-entrypoint-initdb.d/01-init-bebidas.sql
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d virtualcoffee_bebidas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo-pedidos:
+    image: mongo:7.0
+    container_name: mongo-pedidos
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: virtualcoffee_pedidos
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_pedidos_data:/data/db
+      - ./database/init-pedidos.js:/docker-entrypoint-initdb.d/init-pedidos.js:ro
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/virtualcoffee_pedidos --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  api-bebidas:
+    build:
+      context: ./api-bebidas
+      dockerfile: Dockerfile
+    container_name: api-bebidas
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-bebidas:5432/virtualcoffee_bebidas
+      - PYTHONPATH=/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./api-bebidas:/app
+    depends_on:
+      postgres-bebidas:
+        condition: service_healthy
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  api-pedidos:
+    build: 
+      context: ./api-pedidos
+      dockerfile: Dockerfile
+    container_name: api-pedidos
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongo-pedidos:27017/virtualcoffee_pedidos?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=virtualcoffee_pedidos
+      - DRINK_API_URL=http://api-bebidas:8000
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    depends_on:
+      api-bebidas:
+        condition: service_healthy
+      mongo-pedidos:
+        condition: service_healthy
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  ui-bebidas:
+    build:
+      context: ./ui-bebidas
+      dockerfile: Dockerfile
+    container_name: ui-bebidas
+    ports:
+      - "4200:4200"
+    environment:
+      - NODE_ENV=development
+      - NG_CLI_ANALYTICS=false
+      - API_BEBIDAS_URL=http://localhost:8001
+    volumes:
+      - ./ui-bebidas/src:/app/src:ro
+      - ./ui-bebidas/angular.json:/app/angular.json:ro
+      - ./ui-bebidas/package.json:/app/package.json:ro
+      - ./ui-bebidas/tsconfig.json:/app/tsconfig.json:ro
+      - /app/node_modules
+    depends_on:
+      api-bebidas:
+        condition: service_healthy
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  ui-pedidos:
+    build:
+      context: ./ui-pedidos
+      dockerfile: Dockerfile
+    container_name: ui-pedidos
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_PEDIDOS_URL=http://localhost:8081
+      - REACT_APP_API_BEBIDAS_URL=http://localhost:8001
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./ui-pedidos/src:/app/src:ro
+      - ./ui-pedidos/package.json:/app/package.json:ro
+      - ./ui-pedidos/public:/app/public:ro
+      - /app/node_modules
+    depends_on:
+      api-pedidos:
+        condition: service_healthy
+    networks:
+      - virtualcoffee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: virtualcoffee-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api-bebidas
+      - api-pedidos
+      - ui-bebidas
+      - ui-pedidos
+    networks:
+      - virtualcoffee-network
+    profiles:
+      - production
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    container_name: virtualcoffee-adminer
+    ports:
+      - "8082:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres-bebidas
+    depends_on:
+      - postgres-bebidas
+    networks:
+      - virtualcoffee-network
+    profiles:
+      - tools
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: virtualcoffee-mongo-express
+    ports:
+      - "8083:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin123@mongo-pedidos:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongo-pedidos
+    networks:
+      - virtualcoffee-network
+    profiles:
+      - tools
+    restart: unless-stopped
+
+networks:
+  virtualcoffee-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_bebidas_data:
+    driver: local
+  mongo_pedidos_data:
+    driver: local
+  node_modules_bebidas:
+    driver: local
+  node_modules_pedidos:
+    driver: local

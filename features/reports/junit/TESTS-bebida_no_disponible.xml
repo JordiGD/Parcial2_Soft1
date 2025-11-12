@@ -1,0 +1,84 @@
+<testsuite name="bebida_no_disponible.Rechazar pedido de bebida no disponible" tests="6" errors="0" failures="5" skipped="6" time="0.0" timestamp="2025-11-11T21:22:31.260450" hostname="DESKTOP-9QAF6KM"><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Rechazar pedido de bebida inexistente" status="untested" time="0"><failure type="undefined" message="Undefined Step: el precio debe ser 0.00" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Rechazar pedido de bebida inexistente
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Dado que estoy en la página de pedidos ... untested in 0.000s
+    Cuando intento pedir "SuperCafe" en tamaño "medium" ... untested in 0.000s
+    Entonces el pedido debe ser rechazado ... untested in 0.000s
+    Y debo ver el mensaje de error "Bebida no disponible en el menú" ... untested in 0.000s
+    Y el pedido debe tener estado "REJECTED" ... untested in 0.000s
+    Y el precio debe ser 0.00 ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Rechazar pedido con tamaño no disponible" status="untested" time="0"><failure type="undefined" message="Undefined Step: que existe una bebida &quot;Latte&quot; solo en tamaño &quot;small&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Rechazar pedido con tamaño no disponible
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Dado que existe una bebida "Latte" solo en tamaño "small" ... undefined in 0.000s
+    Cuando intento pedir "Latte" en tamaño "large" ... untested in 0.000s
+    Entonces el pedido debe ser rechazado ... untested in 0.000s
+    Y debo ver "La bebida no está disponible en el tamaño solicitado" ... untested in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Validación de campos obligatorios" status="untested" time="0"><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Validación de campos obligatorios
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Dado que estoy en la página de pedidos ... untested in 0.000s
+    Cuando intento enviar el formulario sin nombre de bebida ... untested in 0.000s
+    Entonces el botón de envío debe estar deshabilitado ... untested in 0.000s
+    Y debo ver un mensaje de validación ... untested in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Validaciones de entrada -- @1.1 " status="untested" time="0"><failure type="undefined" message="Undefined Step: intento pedir &quot;&quot; en tamaño &quot;medium&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Validaciones de entrada -- @1.1 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Cuando intento pedir "" en tamaño "medium" ... undefined in 0.000s
+    Entonces el resultado debe ser "INVALID" ... undefined in 0.000s
+    Y el mensaje debe contener "nombre no puede estar vacío" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Validaciones de entrada -- @1.2 " status="untested" time="0"><failure type="undefined" message="Undefined Step: el resultado debe ser &quot;INVALID&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Validaciones de entrada -- @1.2 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Cuando intento pedir "Latte" en tamaño "grande" ... untested in 0.000s
+    Entonces el resultado debe ser "INVALID" ... undefined in 0.000s
+    Y el mensaje debe contener "Tamaño inválido" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="bebida_no_disponible.Rechazar pedido de bebida no disponible" name="Validaciones de entrada -- @1.3 " status="untested" time="0"><failure type="undefined" message="Undefined Step: el resultado debe ser &quot;REJECTED&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Validaciones de entrada -- @1.3 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y NO existe una bebida llamada "SuperCafe" ... untested in 0.000s
+    Cuando intento pedir "BebidaFalsa" en tamaño "small" ... untested in 0.000s
+    Entonces el resultado debe ser "REJECTED" ... undefined in 0.000s
+    Y el mensaje debe contener "no disponible" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase></testsuite>

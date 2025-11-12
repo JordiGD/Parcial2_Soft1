@@ -1,0 +1,40 @@
+<div class="menu-container">
+  <h2>Menú de Bebidas</h2>
+  
+  <div *ngIf="loading" class="loading">
+    <span class="spinner">⏳</span> Cargando menú de bebidas...
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    <span class="error-icon">⚠️</span>
+    <div class="error-text">
+      <strong>Error al cargar el menú</strong>
+      <p>{{ error }}</p>
+    </div>
+  </div>
+  
+  <div *ngIf="!loading && !error && bebidas.length === 0" class="empty-state">
+    <span class="empty-icon">☕</span>
+    <p>No hay bebidas disponibles en el menú</p>
+    <small>El menú se actualizará automáticamente cuando haya bebidas disponibles.</small>
+  </div>
+  
+  <table *ngIf="!loading && bebidas.length > 0" class="menu-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Tamaño</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bebida of bebidas" [attr.data-testid]="'bebida-' + bebida.id">
+        <td>{{ bebida.id }}</td>
+        <td>{{ bebida.name }}</td>
+        <td class="size" [ngClass]="'size-' + bebida.size">{{ bebida.size }}</td>
+        <td class="price">${{ bebida.price | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

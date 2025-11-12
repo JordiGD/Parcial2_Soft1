@@ -1,0 +1,142 @@
+.menu-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.menu-container h2 {
+  background-color: #2c3e50;
+  color: white;
+  margin: 0;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  padding: 1.5rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  margin: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.error-text strong {
+  color: #856404;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.error-text p {
+  color: #664d03;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #6c757d;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.empty-state small {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.loading {
+  color: #3498db;
+}
+
+.error {
+  color: #e74c3c;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  margin: 1rem;
+}
+
+.empty {
+  color: #7f8c8d;
+}
+
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.menu-table th {
+  background-color: #ecf0f1;
+  padding: 1rem;
+  text-align: left;
+  font-weight: bold;
+  color: #2c3e50;
+  border-bottom: 2px solid #bdc3c7;
+}
+
+.menu-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.menu-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.price {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.size {
+  text-transform: capitalize;
+}
+
+.size-small {
+  color: #f39c12;
+}
+
+.size-medium {
+  color: #3498db;
+}
+
+.size-large {
+  color: #e74c3c;
+}

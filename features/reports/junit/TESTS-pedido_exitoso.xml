@@ -1,0 +1,76 @@
+<testsuite name="pedido_exitoso.Realizar pedido exitoso" tests="5" errors="0" failures="4" skipped="5" time="0.0" timestamp="2025-11-11T21:22:31.296644" hostname="DESKTOP-9QAF6KM"><testcase classname="pedido_exitoso.Realizar pedido exitoso" name="Pedido exitoso de bebida disponible" status="untested" time="0"><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Pedido exitoso de bebida disponible
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 ... untested in 0.000s
+    Dado que estoy en la página de pedidos ... untested in 0.000s
+    Cuando selecciono la bebida "Latte" ... untested in 0.000s
+    Y selecciono el tamaño "medium" ... untested in 0.000s
+    Y hago clic en "Realizar Pedido" ... untested in 0.000s
+    Entonces el pedido debe ser creado exitosamente ... untested in 0.000s
+    Y debo ver el mensaje "Pedido realizado exitosamente" ... untested in 0.000s
+    Y el pedido debe aparecer en el historial con estado "CONFIRMED" ... untested in 0.000s
+    Y el precio del pedido debe ser 3.50 ... untested in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="pedido_exitoso.Realizar pedido exitoso" name="Pedido con bebida y tamaño específico" status="untested" time="0"><failure type="undefined" message="Undefined Step: el pedido debe ser confirmado" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Pedido con bebida y tamaño específico
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 ... untested in 0.000s
+    Dado que estoy en la página de pedidos ... untested in 0.000s
+    Cuando intento pedir "Espresso" en tamaño "small" ... untested in 0.000s
+    Entonces si la bebida existe en ese tamaño ... untested in 0.000s
+    Entonces el pedido debe ser confirmado ... undefined in 0.000s
+    Y el historial debe actualizarse automáticamente ... untested in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="pedido_exitoso.Realizar pedido exitoso" name="Pedidos de diferentes bebidas -- @1.1 " status="untested" time="0"><failure type="undefined" message="Undefined Step: que existe una bebida &quot;Cappuccino&quot; en tamaño &quot;large&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.1 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 ... untested in 0.000s
+    Dado que existe una bebida "Cappuccino" en tamaño "large" ... undefined in 0.000s
+    Cuando hago un pedido de "Cappuccino" en tamaño "large" ... untested in 0.000s
+    Entonces el pedido debe tener estado "CONFIRMED" ... untested in 0.000s
+    Y el precio debe ser "4.00" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="pedido_exitoso.Realizar pedido exitoso" name="Pedidos de diferentes bebidas -- @1.2 " status="untested" time="0"><failure type="undefined" message="Undefined Step: que existe una bebida &quot;Americano&quot; en tamaño &quot;medium&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.2 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 ... untested in 0.000s
+    Dado que existe una bebida "Americano" en tamaño "medium" ... undefined in 0.000s
+    Cuando hago un pedido de "Americano" en tamaño "medium" ... untested in 0.000s
+    Entonces el pedido debe tener estado "CONFIRMED" ... untested in 0.000s
+    Y el precio debe ser "2.50" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="pedido_exitoso.Realizar pedido exitoso" name="Pedidos de diferentes bebidas -- @1.3 " status="untested" time="0"><failure type="undefined" message="Undefined Step: que existe una bebida &quot;Mocha&quot; en tamaño &quot;small&quot;" /><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.3 
+    Dado que la API de bebidas está disponible ... untested in 0.000s
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 ... untested in 0.000s
+    Dado que existe una bebida "Mocha" en tamaño "small" ... undefined in 0.000s
+    Cuando hago un pedido de "Mocha" en tamaño "small" ... untested in 0.000s
+    Entonces el pedido debe tener estado "CONFIRMED" ... untested in 0.000s
+    Y el precio debe ser "3.00" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase></testsuite>

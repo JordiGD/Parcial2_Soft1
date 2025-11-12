@@ -1,0 +1,104 @@
+Característica: Rechazar pedido de bebida no disponible # bebida_no_disponible.feature:2
+  Como sistema de VirtualCoffee
+  Quiero rechazar pedidos de bebidas no disponibles
+  Para mantener la integridad del sistema
+  Característica: Rechazar pedido de bebida no disponible  # bebida_no_disponible.feature:2
+
+  Escenario: Rechazar pedido de bebida inexistente                   # bebida_no_disponible.feature:11
+    Dado que la API de bebidas está disponible                       # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"                       # steps/pedido_steps.py:28
+    Dado que estoy en la página de pedidos                           # steps/pedido_steps.py:42
+    Cuando intento pedir "SuperCafe" en tamaño "medium"              # steps/pedido_steps.py:78
+    Entonces el pedido debe ser rechazado                            # steps/pedido_steps.py:164
+    Y debo ver el mensaje de error "Bebida no disponible en el menú" # steps/pedido_steps.py:173
+    Y el pedido debe tener estado "REJECTED"                         # steps/pedido_steps.py:182
+    Y el precio debe ser 0.00                                        # None
+
+  Escenario: Rechazar pedido con tamaño no disponible                 # bebida_no_disponible.feature:19
+    Dado que la API de bebidas está disponible                        # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"                        # steps/pedido_steps.py:28
+    Dado que existe una Lattea "Latte" sollargetamaño "small"         # steps/pedido_steps.py:78
+    Cuando intento pedir "Latte" en tamaño "large"                    # steps/pedido_steps.py:164
+    Entonces el pedido La bebida no está disponible en el tamaño solicitado                             # steps/pedido_steps.py:191
+    Y debo ver "La bebida no está disponible en el tamaño solicitado" # None
+
+  Escenario: Validación de campos obligatorios               # bebida_no_disponible.feature:25
+    Dado que la API de bebidas está disponible               # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"               # steps/pedido_steps.py:28
+    Dado que estoy en la página de pedidos                   # steps/pedido_steps.py:42
+    Cuando intento enviar el formulario sin nombre de bebida # steps/pedido_steps.py:96
+    Entonces el botón de envío debe estar deshabilitado      # steps/pedido_steps.py:200
+    Y debo ver un mensaje de validación                      # steps/pedido_steps.py:205
+
+  Esquema del escenario: Validaciones de entrada -- @1.1     # bebida_no_disponible.feature:38
+    Dado que la API de bebidas está disponible               # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"               # steps/pedido_steps.py:28
+    Cuando intento pedir "" en tamaño "medium"               # None
+    Entonces el resultado debe ser "INVALID"                 # None
+    Y el mensaje debe contener "nombre no puede estar vacío" # None
+
+  Esquema del escenario: Validaciones de entrada -- @1.2   # bebida_no_disponible.feature:39
+    Dado que la API de bebidas está disponible             # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"             # steps/pedido_steps.py:28
+    Cuando intento pedir "Latte" en tamaño "grande"        # steps/pedido_steps.py:78
+    Entonces el resultado debe ser "INVALID"               # None
+    Y el mensaje debe contener "Tamaño inválido"           # None
+
+  Esquema del escenario: Validaciones de entrada -- @1.3   # bebida_no_disponible.feature:40
+    Dado que la API de bebidas está disponible             # steps/pedido_steps.py:11
+    Y NO existe una bebida llamada "SuperCafe"             # steps/pedido_steps.py:28
+    Cuando intento pedir "BebidaFalsa" en tamaño "small"   # steps/pedido_steps.py:78
+    Entonces el resultado debe ser "REJECTED"              # None
+    Y el mensaje debe contener "no disponible"             # None
+
+Característica: Realizar pedido exitoso # pedido_exitoso.feature:2
+  Como cliente de VirtualCoffee
+  Quiero realizar un pedido de una bebida disponible
+  Para poder disfrutar de mi bebida favorita
+  Característica: Realizar pedido exitoso  # pedido_exitoso.feature:2
+
+  Escenario: Pedido exitoso de bebida disponible                     # pedido_exitoso.feature:11
+    Dado que la API de bebidas está disponible                       # steps/pedido_steps.py:11
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50   # steps/pedido_steps.py:21
+    Dado que estoy en la página de pedidos                           # steps/pedido_steps.py:42
+    Cuando selecciono la bebida "Latte"                              # steps/pedido_steps.py:51
+    Y selecciono el tamaño "medium"                                  # steps/pedido_steps.py:60
+    Y hago clic en "Realizar Pedido"                                 # steps/pedido_steps.py:69
+    Entonces el pedido debe ser creado exitosamente                  # steps/pedido_steps.py:106
+    Y debo ver el mensaje "Pedido realizado exitosamente"            # steps/pedido_steps.py:115
+    Y el pedido debe aparecer en el historial con estado "CONFIRMED" # steps/pedido_steps.py:124
+    Y el precio del pedido debe ser 3.50                             # steps/pedido_steps.py:133
+
+  Escenario: Pedido con bebida y tamaño específico                 # pedido_exitoso.feature:21
+    Dado que la API de bebidas está disponible                     # steps/pedido_steps.py:11
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 # steps/pedido_steps.py:21
+    Dado que estoy en la página de pedidos                         # steps/pedido_steps.py:42
+    Cuando intento pedir "Espresso" en tamaño "small"              # steps/pedido_steps.py:78
+    Entonces si la bebida existe en ese tamaño                     # steps/pedido_steps.py:142
+    Entonces el pedido debe ser confirmado                         # steps/pedido_steps.py:155
+    Y el historial debe actualizarse automáticamente               # None
+
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.1     # pedido_exitoso.feature:36
+    Dado que la API de bebidas está disponible                     # steps/pedido_steps.py:11
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 # steps/pedido_steps.py:21
+    Dado que existe una bebiCappuccinocino" en tamalargearge"      # steps/pedido_steps.py:87
+    Cuando hago un pedido de "CappuccinoCONFIRMEDño "large"        # steps/pedido_steps.py:182
+    Entonces el pedido debe tener estado "CONFIRMED"               # None
+    Y el precio debe ser "4.00"                                    # None
+
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.2     # pedido_exitoso.feature:37
+    Dado que la API de bebidas está disponible                     # steps/pedido_steps.py:11
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 # steps/pedido_steps.py:21
+    Dado que existe una bebiAmericanocano" en tamamediumdium"      # steps/pedido_steps.py:87
+    Cuando hago un pedido de "Americano"CONFIRMEDo "medium"        # steps/pedido_steps.py:182
+    Entonces el pedido debe tener estado "CONFIRMED"               # None
+    Y el precio debe ser "2.50"                                    # None
+
+  Esquema del escenario: Pedidos de diferentes bebidas -- @1.3     # pedido_exitoso.feature:38
+    Dado que la API de bebidas está disponible                     # steps/pedido_steps.py:11
+    Y existe una bebida "Latte" en tamaño "medium" con precio 3.50 # steps/pedido_steps.py:21
+    Dado que existe una bebiMochaocha" en tamasmallmall"           # steps/pedido_steps.py:87
+    Cuando hago un pedido de "Mocha" en CONFIRMEDmall"             # steps/pedido_steps.py:182
+    Entonces el pedido debe tener estado "CONFIRMED"               # None
+    Y el precio debe ser "3.00"                                    # None
+
